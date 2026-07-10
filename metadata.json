@@ -1,0 +1,6 @@
+{
+  "name": "Porcelanataria Premium",
+  "description": "Landing page de alto padrão para porcelanataria de luxo, com design mobile-first e estética dark.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

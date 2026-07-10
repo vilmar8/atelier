@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cinzel", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-alt: "Montserrat", sans-serif;
+  
+  --color-gold-champagne: #D4B27A;
+  --color-gold-light: #EAD0A8;
+  --color-gold-dark: #A5844F;
+  --color-graphite-dark: #121212;
+  --color-graphite-deep: #0B0B0B;
+  --color-stone-nero: #050505;
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #A5844F;
+  border-radius: 3px;
+}
+
+/* Luxury glow effects */
+.glow-gold {
+  box-shadow: 0 0 20px rgba(212, 178, 122, 0.15);
+}
+
+.glow-gold-hover:hover {
+  box-shadow: 0 0 30px rgba(212, 178, 122, 0.3);
+}
+
+.text-stroke-gold {
+  -webkit-text-stroke: 1px rgba(212, 178, 122, 0.3);
+  color: transparent;
+}
+
