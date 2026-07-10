@@ -7,20 +7,28 @@ import InteractiveBudget from "./components/InteractiveBudget";
 import Philosophy from "./components/Philosophy";
 import DossierModal from "./components/DossierModal";
 import StickyCTA from "./components/StickyCTA";
-import { Award, ShieldAlert, Sparkles, Phone, ShieldCheck, Mail, MapPin } from "lucide-react";
+import { Award, ShieldAlert, Sparkles, Phone, ShieldCheck, Mail, MapPin, MessageCircle } from "lucide-react";
 
 export default function App() {
   const [isDossierOpen, setIsDossierOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("lavatorio");
+
+  const handleOpenDossier = (category?: string) => {
+    if (category) {
+      setSelectedCategory(category);
+    }
+    setIsDossierOpen(true);
+  };
 
   return (
     <div className="bg-black text-gray-300 font-sans min-h-screen selection:bg-gold-champagne selection:text-black">
       {/* Header with menu drawer triggers */}
-      <Header onOpenDossier={() => setIsDossierOpen(true)} />
+      <Header onOpenDossier={() => handleOpenDossier("lavatorio")} />
 
       {/* Main interactive sections */}
       <main className="pb-24">
         {/* Section 1: Hero Impactante */}
-        <HeroSection onOpenDossier={() => setIsDossierOpen(true)} />
+        <HeroSection onOpenDossier={() => handleOpenDossier("lavatorio")} />
 
         {/* Section 2: Comparativo Visual de Valores */}
         <InteractiveComparison />
@@ -29,7 +37,7 @@ export default function App() {
         <MiterPrecisionTester />
 
         {/* Section 4: Simulador de Investimento */}
-        <InteractiveBudget onOpenDossier={() => setIsDossierOpen(true)} />
+        <InteractiveBudget onOpenDossier={(category) => handleOpenDossier(category)} />
 
         {/* Section 5: Filosofia do Material, o Mito do Mármore e Escassez */}
         <Philosophy />
@@ -84,8 +92,17 @@ export default function App() {
             <a href="mailto:contato@atelierporcelanaria.com.br" className="hover:text-gold-champagne transition-colors" aria-label="E-mail">
               <Mail className="w-4 h-4 inline mr-1" />
             </a>
-            <a href="tel:+5511999999999" className="hover:text-gold-champagne transition-colors" aria-label="Telefone">
+            <a href="tel:+5599985180711" className="hover:text-gold-champagne transition-colors" aria-label="Telefone">
               <Phone className="w-4 h-4 inline mr-1" />
+            </a>
+            <a 
+              href={`https://wa.me/5599985180711?text=${encodeURIComponent("Olá! 👋 Acessei o site do Atelier Porcelanataria e gostaria de solicitar um orçamento para um projeto exclusivo! ✨")}`} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-gold-champagne transition-colors" 
+              aria-label="WhatsApp"
+            >
+              <MessageCircle className="w-4 h-4 inline mr-1" />
             </a>
           </div>
 
@@ -97,10 +114,10 @@ export default function App() {
       </footer>
 
       {/* Interactive Questionnaire Modal Trigger */}
-      <DossierModal isOpen={isDossierOpen} onClose={() => setIsDossierOpen(false)} />
+      <DossierModal isOpen={isDossierOpen} onClose={() => setIsDossierOpen(false)} defaultCategory={selectedCategory} />
 
       {/* Floating Sticky Mobile Thumb CTA */}
-      <StickyCTA onOpenDossier={() => setIsDossierOpen(true)} />
+      <StickyCTA onOpenDossier={() => handleOpenDossier("lavatorio")} />
     </div>
   );
 }

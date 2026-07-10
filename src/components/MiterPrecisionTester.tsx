@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sliders, CheckCircle2, AlertTriangle, ShieldCheck } from "lucide-react";
+import { CheckCircle2, AlertTriangle, ShieldCheck } from "lucide-react";
 
 export default function MiterPrecisionTester() {
   const [sliderVal, setSliderVal] = useState(50); // 0 to 100
@@ -62,16 +62,6 @@ export default function MiterPrecisionTester() {
                   <ShieldCheck className="w-3 h-3 text-gold-light" />
                   <span className="font-sans text-[8px] text-white uppercase tracking-widest font-semibold">Nosso Acabamento</span>
                 </div>
-              </div>
-            </div>
-
-            {/* 3. DRAG HANDLE INDICATOR */}
-            <div 
-              className="absolute inset-y-0 pointer-events-none flex items-center justify-center z-30"
-              style={{ left: `${sliderVal}%` }}
-            >
-              <div className="w-8 h-8 rounded-full bg-gold-champagne border border-black flex items-center justify-center shadow-lg -ml-4">
-                <Sliders className="w-3.5 h-3.5 text-black transform rotate-90" />
               </div>
             </div>
           </div>

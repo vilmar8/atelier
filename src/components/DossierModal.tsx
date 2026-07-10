@@ -1,40 +1,47 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, ArrowRight, Check, Send, Sparkle, Phone, Lock, Calendar, ClipboardList } from "lucide-react";
-import { PROJECT_TYPES } from "../data";
+import { X, ArrowRight, Check, Send, Phone, Lock, ClipboardList } from "lucide-react";
+import { PROJECT_TYPES, PROJECT_ENVIRONMENTS } from "../data";
 
 interface DossierModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultCategory?: string;
 }
 
-export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
+export default function DossierModal({ isOpen, onClose, defaultCategory = "lavatorio" }: DossierModalProps) {
   const [step, setStep] = useState(1);
-  const [selectedType, setSelectedType] = useState(PROJECT_TYPES[0].id);
-  const [dimensions, setDimensions] = useState("4 a 8 linear/m²");
+  const [selectedEnv, setSelectedEnv] = useState("lavabo");
   const [name, setName] = useState("");
-  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
+  const [reference, setReference] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
 
-  const activeProject = PROJECT_TYPES.find((p) => p.id === selectedType) || PROJECT_TYPES[0];
-
   const handleNextStep = () => {
-    if (step < 3) {
+    if (step < 2) {
       setStep(step + 1);
     } else {
       // Compile WhatsApp details
-      const msg = `Olá Atelier Porcelanataria, gostaria de solicitar um orçamento exclusivo.\n\n*Dados do Projeto:*\n- *Ambiente:* ${activeProject.name}\n- *Dimensão:* ${dimensions}\n\n*Dados do Cliente:*\n- *Nome:* ${name}\n- *Localização:* ${city}\n- *WhatsApp:* ${whatsapp}\n\nPor favor, envie o Dossier Digital de Acabamentos.`;
+      const activeEnv = PROJECT_ENVIRONMENTS.find((e) => e.id === selectedEnv) || PROJECT_ENVIRONMENTS[0];
+      const categoryObj = PROJECT_TYPES.find((c) => c.id === defaultCategory) || PROJECT_TYPES[0];
+
+      const msg = `Olá! ✨ Gostaria de fazer um orçamento com o Atelier Porcelanataria. Montei uma ideia no simulador do site e gostaria de validar com vocês:
+- 📐 Tipo de Projeto: ${categoryObj.name}
+- 💎 Tipo de Acabamento: Estrutura Reforçada
+- 📍 Endereço: ${address}
+- 📌 Referência: ${reference || "Não informado"}`;
       const encodedMsg = encodeURIComponent(msg);
       // Open WhatsApp redirect
-      window.open(`https://wa.me/5511999999999?text=${encodedMsg}`, "_blank");
-      setStep(4); // Success step
+      window.open(`https://wa.me/5599985180711?text=${encodedMsg}`, "_blank");
+      setStep(3); // Success step
     }
   };
 
   const resetForm = () => {
     setStep(1);
     setName("");
-    setCity("");
+    setAddress("");
+    setReference("");
     setWhatsapp("");
     onClose();
   };
@@ -72,9 +79,8 @@ export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
             <div className="p-6 border-b border-white/5 bg-gradient-to-r from-black/50 to-transparent flex items-center gap-3">
               <div className="w-10 h-10 bg-gold-champagne/10 border border-gold-champagne/20 rounded-full flex items-center justify-center text-gold-champagne">
                 {step === 1 && <ClipboardList className="w-5 h-5" />}
-                {step === 2 && <Calendar className="w-5 h-5" />}
-                {step === 3 && <Phone className="w-5 h-5" />}
-                {step === 4 && <Check className="w-5 h-5" />}
+                {step === 2 && <Phone className="w-5 h-5" />}
+                {step === 3 && <Check className="w-5 h-5" />}
               </div>
               <div>
                 <span className="text-[9px] uppercase tracking-widest text-gold-champagne font-bold">Solicitação de Estudo</span>
@@ -83,11 +89,11 @@ export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
             </div>
 
             {/* Steps Progress Indicator */}
-            {step < 4 && (
+            {step < 3 && (
               <div className="flex bg-black/40 h-1 border-b border-white/5">
                 <div 
                   className="bg-gold-champagne h-full transition-all duration-300"
-                  style={{ width: `${(step / 3) * 100}%` }}
+                  style={{ width: `${(step / 2) * 100}%` }}
                 />
               </div>
             )}
@@ -108,26 +114,26 @@ export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
                         Selecione o Ambiente do Projeto
                       </label>
                       <div className="grid grid-cols-1 gap-2.5">
-                        {PROJECT_TYPES.map((type) => (
+                        {PROJECT_ENVIRONMENTS.map((env) => (
                           <button
-                            id={`modal-project-type-${type.id}`}
-                            key={type.id}
-                            onClick={() => setSelectedType(type.id)}
+                            id={`modal-env-${env.id}`}
+                            key={env.id}
+                            onClick={() => setSelectedEnv(env.id)}
                             className={`w-full p-4 rounded-lg border text-left flex items-center justify-between transition-all ${
-                              selectedType === type.id
+                              selectedEnv === env.id
                                 ? "bg-gold-champagne/10 border-gold-champagne text-white"
                                 : "bg-black/30 border-white/5 text-gray-400 hover:border-white/10"
                             }`}
                           >
                             <div>
                               <span className="font-serif text-xs uppercase tracking-wider block font-semibold text-white">
-                                {type.name}
+                                {env.name}
                               </span>
                               <span className="font-sans text-[10px] text-gray-400 mt-1 block font-light">
-                                {type.description}
+                                {env.description}
                               </span>
                             </div>
-                            {selectedType === type.id && (
+                            {selectedEnv === env.id && (
                               <div className="w-4 h-4 bg-gold-champagne rounded-full flex items-center justify-center">
                                 <Check className="w-2.5 h-2.5 text-black font-extrabold" />
                               </div>
@@ -156,62 +162,6 @@ export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
                     exit={{ opacity: 0, x: -20 }}
                     className="space-y-4"
                   >
-                    <div>
-                      <label className="block font-serif text-xs uppercase tracking-widest text-white mb-3 font-semibold">
-                        Extensão aproximada do projeto
-                      </label>
-                      
-                      <div className="grid grid-cols-1 gap-2">
-                        {[
-                          "Até 3 metros lineares / m² (Lavabos e pequenas cubas)",
-                          "4 a 8 metros lineares / m² (Cozinhas padrão, banheiros integrados)",
-                          "9 a 15 metros lineares / m² (Ilhas grandes, espaços gourmet amplos)",
-                          "Acima de 15 metros lineares / m² (Projetos corporativos ou residências inteiras)"
-                        ].map((dim) => (
-                          <button
-                            id={`modal-dimension-${dim.substring(0, 10)}`}
-                            key={dim}
-                            onClick={() => setDimensions(dim)}
-                            className={`w-full p-4 rounded-lg border text-left transition-all ${
-                              dimensions === dim
-                                ? "bg-gold-champagne/10 border-gold-champagne text-white"
-                                : "bg-black/30 border-white/5 text-gray-400 hover:border-white/10"
-                            }`}
-                          >
-                            <span className="font-sans text-xs font-light">{dim}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex gap-3 mt-6">
-                      <button
-                        id="modal-back-2-btn"
-                        onClick={() => setStep(1)}
-                        className="flex-1 border border-white/10 text-gray-400 font-alt font-semibold tracking-widest text-xs uppercase py-4 rounded-md hover:text-white"
-                      >
-                        Voltar
-                      </button>
-                      <button
-                        id="modal-next-2-btn"
-                        onClick={handleNextStep}
-                        className="flex-1 bg-gold-champagne hover:bg-gold-light text-black font-alt font-bold tracking-widest text-xs uppercase py-4 rounded-md transition-all flex items-center justify-center gap-2 shadow-lg"
-                      >
-                        <span>Avançar</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-
-                {step === 3 && (
-                  <motion.div
-                    key="step-3"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="space-y-4"
-                  >
                     <div className="space-y-4">
                       <div>
                         <label className="block font-serif text-xs uppercase tracking-widest text-white mb-1.5 font-semibold">
@@ -230,15 +180,29 @@ export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
 
                       <div>
                         <label className="block font-serif text-xs uppercase tracking-widest text-white mb-1.5 font-semibold">
-                          Cidade / Estado
+                          Endereço e Número
                         </label>
                         <input
-                          id="modal-input-city"
+                          id="modal-input-address"
                           type="text"
                           required
-                          value={city}
-                          onChange={(e) => setCity(e.target.value)}
-                          placeholder="Ex: São Paulo - SP"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          placeholder="Ex: Rua da Olaria, nº 150"
+                          className="w-full bg-black/60 border border-white/10 rounded-lg py-3.5 px-4 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-gold-champagne"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block font-serif text-xs uppercase tracking-widest text-white mb-1.5 font-semibold">
+                          Ponto de Referência
+                        </label>
+                        <input
+                          id="modal-input-reference"
+                          type="text"
+                          value={reference}
+                          onChange={(e) => setReference(e.target.value)}
+                          placeholder="Ex: Próximo ao Comercial Santo Antônio"
                           className="w-full bg-black/60 border border-white/10 rounded-lg py-3.5 px-4 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-gold-champagne"
                         />
                       </div>
@@ -261,8 +225,8 @@ export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
 
                     <div className="flex gap-3 mt-6">
                       <button
-                        id="modal-back-3-btn"
-                        onClick={() => setStep(2)}
+                        id="modal-back-2-btn"
+                        onClick={() => setStep(1)}
                         className="flex-1 border border-white/10 text-gray-400 font-alt font-semibold tracking-widest text-xs uppercase py-4 rounded-md hover:text-white"
                       >
                         Voltar
@@ -270,9 +234,9 @@ export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
                       <button
                         id="modal-submit-btn"
                         onClick={handleNextStep}
-                        disabled={!name || !city || !whatsapp}
+                        disabled={!name || !address || !whatsapp}
                         className={`flex-1 font-alt font-bold tracking-widest text-xs uppercase py-4 rounded-md transition-all flex items-center justify-center gap-2 shadow-lg ${
-                          name && city && whatsapp
+                          name && address && whatsapp
                             ? "bg-gold-champagne hover:bg-gold-light text-black glow-gold"
                             : "bg-gray-800 text-gray-500 cursor-not-allowed"
                         }`}
@@ -289,9 +253,9 @@ export default function DossierModal({ isOpen, onClose }: DossierModalProps) {
                   </motion.div>
                 )}
 
-                {step === 4 && (
+                {step === 3 && (
                   <motion.div
-                    key="step-4"
+                    key="step-3"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="text-center py-6 space-y-6"

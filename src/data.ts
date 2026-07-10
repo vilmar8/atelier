@@ -2,38 +2,55 @@ import { ProjectType, ComparisonCard } from "./types";
 
 export const PROJECT_TYPES: ProjectType[] = [
   {
-    id: "cozinha",
-    name: "Cozinha & Espaço Gourmet",
-    description: "Bancadas, ilhas e frontões expostos a gorduras e ácidos, exigindo porosidade zero.",
-    avgNaturalPrice: 2200,
-    avgPorcelainPrice: 890,
-    iconName: "Flame",
-  },
-  {
-    id: "banheiro",
-    name: "Salas de Banho & Cubas Esculpidas",
-    description: "Cubas monolíticas e nichos com acabamento milimétrico em 45°.",
-    avgNaturalPrice: 1800,
-    avgPorcelainPrice: 790,
+    id: "lavatorio",
+    name: "Lavatório Esculpido",
+    description: "Bancadas exclusivas com cubas esculpidas sob medida no porcelanato.",
+    avgNaturalPrice: 0,
+    avgPorcelainPrice: 0,
     iconName: "Droplet",
   },
   {
-    id: "living",
-    name: "Living & Lareiras Integradas",
-    description: "Painéis de TV, lareiras imponentes e revestimentos de grandes formatos.",
-    avgNaturalPrice: 1900,
-    avgPorcelainPrice: 750,
-    iconName: "Sparkles",
+    id: "nicho",
+    name: "Nicho Organizador",
+    description: "Nichos embutidos de alto padrão para banheiros e áreas de banho.",
+    avgNaturalPrice: 0,
+    avgPorcelainPrice: 0,
+    iconName: "Maximize2",
   },
   {
-    id: "piso",
-    name: "Grandes Formatos & Revestimentos",
-    description: "Slabs contínuos de até 3,20m com paginação perfeita e veios combinados.",
-    avgNaturalPrice: 3100,
-    avgPorcelainPrice: 1400,
-    iconName: "Layers",
+    id: "combo",
+    name: "Combo Banheiro Completo",
+    description: "Lavatório esculpido + Nicho combinando para o mesmo ambiente.",
+    avgNaturalPrice: 0,
+    avgPorcelainPrice: 0,
+    iconName: "Sparkles",
   },
 ];
+
+export interface ProjectEnvironment {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export const PROJECT_ENVIRONMENTS: ProjectEnvironment[] = [
+  {
+    id: "lavabo",
+    name: "Lavabo ou Banheiro Social",
+    description: "Projetos compactos e sofisticados com foco em cubas esculpidas e nichos sob medida.",
+  },
+  {
+    id: "suite",
+    name: "Banheiro Suíte / Master",
+    description: "Bancadas extensas, cubas duplas esculpidas ou nichos organizadores de grande formato.",
+  },
+  {
+    id: "servico",
+    name: "Área de Serviço / Outros",
+    description: "Tanques esculpidos em porcelanato ou nichos específicos para organização utilitária.",
+  },
+];
+
 
 export const COMPARISONS: ComparisonCard[] = [
   {
